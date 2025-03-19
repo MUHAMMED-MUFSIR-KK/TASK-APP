@@ -1,13 +1,19 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_application_1/features/authentication/view_model/auth_controller.dart';
 import 'package:flutter_application_1/features/todo/view/pages/categories_page.dart';
 import 'package:go_router/go_router.dart';
+import 'package:hooks_riverpod/hooks_riverpod.dart';
 
-class SettingsScreen extends StatelessWidget {
+class SettingsScreen extends HookConsumerWidget {
   static const routePath = "/SettingsScreen";
-  SettingsScreen({super.key});
+  const SettingsScreen({super.key});
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
+    void onLogOutButtonPressed() {
+      ref.read(authControllerProvider.notifier).logOut();
+    }
+
     return Scaffold(
       backgroundColor: const Color.fromARGB(250, 46, 53, 64),
       body: Column(
@@ -50,7 +56,7 @@ class SettingsScreen extends StatelessWidget {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Text(
-                          "Mhammed Mufsir kk",
+                          "Mohammed Mufsir kk",
                           style: TextStyle(
                               fontSize: 20,
                               fontWeight: FontWeight.w500,
@@ -134,6 +140,21 @@ class SettingsScreen extends StatelessWidget {
                         color: Colors.white),
                     Text(
                       "About",
+                      style: TextStyle(fontSize: 14, color: Colors.white),
+                    ),
+                  ],
+                  //
+                ),
+                Row(
+                  children: [
+                    IconButton(
+                        onPressed: () {
+                          onLogOutButtonPressed();
+                        },
+                        icon: Icon(Icons.logout),
+                        color: Colors.white),
+                    Text(
+                      "LogOut",
                       style: TextStyle(fontSize: 14, color: Colors.white),
                     ),
                   ],

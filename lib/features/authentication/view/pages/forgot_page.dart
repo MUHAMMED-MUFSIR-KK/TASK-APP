@@ -1,23 +1,36 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_application_1/features/authentication/view/pages/create_account_page.dart';
+import 'package:flutter_application_1/features/authentication/view/pages/signup_page.dart';
 import 'package:flutter_application_1/features/authentication/view/pages/login_page.dart';
 import 'package:flutter_application_1/features/authentication/view/widget/button.widget.dart';
 import 'package:flutter_application_1/features/authentication/view/widget/link_text_widget.dart';
+import 'package:flutter_application_1/features/authentication/view_model/auth_controller.dart';
 import 'package:go_router/go_router.dart';
+import 'package:hooks_riverpod/hooks_riverpod.dart';
 
-class ForgotPasswordPage extends StatelessWidget {
+class ForgotPasswordPage extends HookConsumerWidget {
   static const routePath = "/ForgotPasswordPage";
 
   const ForgotPasswordPage({super.key});
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
+    final email = TextEditingController();
+    final formKey = GlobalKey<FormState>();
+    void onContinueButtonPressed() {
+      if (formKey.currentState!.validate()) {
+        ref
+            .read(authControllerProvider.notifier)
+            .sendPasswordResetEmail(email.text);
+      }
+    }
+
     return Scaffold(
       backgroundColor: const Color.fromARGB(250, 46, 53, 64),
       body: Padding(
         padding: const EdgeInsets.all(20),
         child: SingleChildScrollView(
           child: Form(
+            key: formKey,
             child: Column(
               children: [
                 SizedBox(
@@ -26,7 +39,7 @@ class ForgotPasswordPage extends StatelessWidget {
                 Row(
                   children: [
                     IconButton(
-                        onPressed: () => context.push(SignInPage.routePath),
+                        onPressed: () => context.push(LogInPage.routePath),
                         icon: Icon(
                           Icons.arrow_back_ios,
                           color: Colors.white,
@@ -41,6 +54,10 @@ class ForgotPasswordPage extends StatelessWidget {
                   height: 20,
                 ),
                 TextFormField(
+                  controller: email,
+                  validator:
+                      ref.read(authControllerProvider.notifier).validateEmail,
+                  style: TextStyle(color: Colors.white),
                   decoration: InputDecoration(
                     fillColor: const Color.fromARGB(250, 55, 63, 74),
                     filled: true,
@@ -69,7 +86,10 @@ class ForgotPasswordPage extends StatelessWidget {
                 SizedBox(
                   height: 40,
                 ),
-                ButtonWidget(text: "CONTINUE", onTap: () {}),
+                ButtonWidget(
+                  text: "CONTINUE",
+                  onTap: () => onContinueButtonPressed(),
+                ),
                 SizedBox(
                   height: 40,
                 ),

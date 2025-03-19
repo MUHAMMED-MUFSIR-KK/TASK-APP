@@ -1,19 +1,31 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_application_1/features/authentication/view/pages/create_account_page.dart';
+import 'package:flutter_application_1/features/authentication/view/pages/signup_page.dart';
 import 'package:flutter_application_1/features/authentication/view/pages/forgot_page.dart';
 import 'package:flutter_application_1/features/authentication/view/widget/button.widget.dart';
 import 'package:flutter_application_1/features/authentication/view/widget/link_text_widget.dart';
+import 'package:flutter_application_1/features/authentication/view_model/auth_controller.dart';
 
 import 'package:go_router/go_router.dart';
+import 'package:hooks_riverpod/hooks_riverpod.dart';
 
-class SignInPage extends StatelessWidget {
-  static const routePath = "/LoginPage";
+class LogInPage extends HookConsumerWidget {
+  static const routePath = "/LogInPage";
 
-  const SignInPage({super.key});
+  const LogInPage({super.key});
 
   @override
-  Widget build(BuildContext context) {
-    final signInFormKey = GlobalKey<FormState>();
+  Widget build(BuildContext context, WidgetRef ref) {
+    TextEditingController emailController = TextEditingController();
+    TextEditingController passWordController = TextEditingController();
+    final formKey = GlobalKey<FormState>();
+    void onSignInButtonPressed() {
+      if (formKey.currentState!.validate()) {
+        ref
+            .read(authControllerProvider.notifier)
+            .signIn(emailController.text, passWordController.text);
+      }
+    }
+
     return Scaffold(
       backgroundColor: const Color.fromARGB(250, 46, 53, 64),
       body: ListView(
@@ -23,7 +35,7 @@ class SignInPage extends StatelessWidget {
             child: Padding(
               padding: EdgeInsets.all(20),
               child: Form(
-                key: signInFormKey,
+                key: formKey,
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
@@ -31,6 +43,11 @@ class SignInPage extends StatelessWidget {
                         child: Image(
                             image: AssetImage("assets/images/mimo1.png"))),
                     TextFormField(
+                      controller: emailController,
+                      validator: ref
+                          .read(authControllerProvider.notifier)
+                          .validateEmail,
+                      style: TextStyle(color: Colors.white),
                       decoration: InputDecoration(
                         fillColor: const Color.fromARGB(250, 55, 63, 74),
                         filled: true,
@@ -53,6 +70,11 @@ class SignInPage extends StatelessWidget {
                       height: 20,
                     ),
                     TextFormField(
+                      controller: passWordController,
+                      validator: ref
+                          .read(authControllerProvider.notifier)
+                          .validatePassword,
+                      style: TextStyle(color: Colors.white),
                       decoration: InputDecoration(
                         fillColor: const Color.fromARGB(250, 55, 63, 74),
                         filled: true,
@@ -89,7 +111,11 @@ class SignInPage extends StatelessWidget {
                     SizedBox(
                       height: 50,
                     ),
-                    ButtonWidget(text: "CONTINUE", onTap: () async {}),
+                    ButtonWidget(
+                        text: "CONTINUE",
+                        onTap: () {
+                          onSignInButtonPressed();
+                        }),
                     SizedBox(
                       height: 40,
                     ),
