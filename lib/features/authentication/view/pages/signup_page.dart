@@ -3,24 +3,39 @@ import 'package:flutter/material.dart';
 import 'package:flutter_application_1/features/authentication/view/pages/login_page.dart';
 import 'package:flutter_application_1/features/authentication/view/widget/button.widget.dart';
 import 'package:flutter_application_1/features/authentication/view/widget/link_text_widget.dart';
+import 'package:flutter_application_1/features/authentication/view_model/auth_controller.dart';
 
 import 'package:go_router/go_router.dart';
+import 'package:hooks_riverpod/hooks_riverpod.dart';
 
-class SignUpPage extends StatelessWidget {
-  static const routePath = "/CreateAccountPage";
+class SignUpPage extends HookConsumerWidget {
+  static const routePath = "/SignUpPage";
 
   const SignUpPage({super.key});
 
   @override
-  Widget build(BuildContext context) {
-    final signUpFormKey = GlobalKey<FormState>();
+  Widget build(BuildContext context, WidgetRef ref) {
+    TextEditingController emailController = TextEditingController();
+    TextEditingController passWordController = TextEditingController();
+    TextEditingController nameController = TextEditingController();
+    TextEditingController confirmPasswordController = TextEditingController();
+
+    final formKey = GlobalKey<FormState>();
+
+    void onSignUpButtonPressed() {
+      if (formKey.currentState!.validate()) {
+        ref
+            .read(authControllerProvider.notifier)
+            .signUp(emailController.text, passWordController.text);
+      }
+    }
 
     return Scaffold(
       backgroundColor: const Color.fromARGB(250, 46, 53, 64),
       body: ListView(
         children: [
           Form(
-            key: signUpFormKey,
+            key: formKey,
             child: Column(
               children: [
                 SizedBox(
@@ -31,7 +46,7 @@ class SignUpPage extends StatelessWidget {
                     IconButton(
                         color: Colors.white,
                         onPressed: () {
-                          context.push(SignInPage.routePath);
+                          context.push(LogInPage.routePath);
                         },
                         icon: Icon(Icons.arrow_back_ios)),
                     Text(
@@ -48,6 +63,11 @@ class SignUpPage extends StatelessWidget {
                   child: Column(
                     children: [
                       TextFormField(
+                        controller: nameController,
+                        validator: ref
+                            .read(authControllerProvider.notifier)
+                            .validateName,
+                        style: TextStyle(color: Colors.white),
                         decoration: InputDecoration(
                           fillColor: const Color.fromARGB(250, 55, 63, 74),
                           filled: true,
@@ -68,6 +88,11 @@ class SignUpPage extends StatelessWidget {
                         height: 20,
                       ),
                       TextFormField(
+                        controller: emailController,
+                        validator: ref
+                            .read(authControllerProvider.notifier)
+                            .validateEmail,
+                        style: TextStyle(color: Colors.white),
                         decoration: InputDecoration(
                           fillColor: const Color.fromARGB(250, 55, 63, 74),
                           filled: true,
@@ -88,6 +113,11 @@ class SignUpPage extends StatelessWidget {
                         height: 20,
                       ),
                       TextFormField(
+                        controller: passWordController,
+                        validator: ref
+                            .read(authControllerProvider.notifier)
+                            .validatePassword,
+                        style: TextStyle(color: Colors.white),
                         decoration: InputDecoration(
                           fillColor: const Color.fromARGB(250, 55, 63, 74),
                           filled: true,
@@ -108,6 +138,14 @@ class SignUpPage extends StatelessWidget {
                         height: 20,
                       ),
                       TextFormField(
+                        controller: confirmPasswordController,
+                        validator: (value) => ref
+                            .read(authControllerProvider.notifier)
+                            .validateConfirmPassword(
+                              value,
+                              passWordController.text,
+                            ),
+                        style: TextStyle(color: Colors.white),
                         decoration: InputDecoration(
                           fillColor: const Color.fromARGB(250, 55, 63, 74),
                           filled: true,
@@ -127,7 +165,11 @@ class SignUpPage extends StatelessWidget {
                       SizedBox(
                         height: 20,
                       ),
-                      ButtonWidget(text: "CONTINUE", onTap: () {}),
+                      ButtonWidget(
+                          text: "CONTINUE",
+                          onTap: () {
+                            onSignUpButtonPressed();
+                          }),
                       SizedBox(
                         height: 40,
                       ),
@@ -142,7 +184,7 @@ class SignUpPage extends StatelessWidget {
                           ),
                           LinkWidget(
                             text: "Log In",
-                            onTap: () => context.push(SignInPage.routePath),
+                            onTap: () => context.push(LogInPage.routePath),
                           )
                         ],
                       )
