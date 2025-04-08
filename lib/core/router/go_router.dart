@@ -1,8 +1,8 @@
 import 'package:flutter_application_1/features/authentication/view/pages/signup_page.dart';
 import 'package:flutter_application_1/features/authentication/view/pages/forgot_page.dart';
 import 'package:flutter_application_1/features/authentication/view/pages/login_page.dart';
-import 'package:flutter_application_1/features/todo/view/pages/categories_page.dart';
-import 'package:flutter_application_1/features/todo/view/pages/settings_page.dart';
+import 'package:flutter_application_1/features/categories/view/pages/categories_page.dart';
+import 'package:flutter_application_1/features/categories/view/pages/settings_page.dart';
 import 'package:flutter_application_1/main.dart';
 import 'package:go_router/go_router.dart';
 
