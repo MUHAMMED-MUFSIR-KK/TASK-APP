@@ -7,12 +7,12 @@ part of 'task_model.dart';
 // **************************************************************************
 
 _TaskModel _$TaskModelFromJson(Map<String, dynamic> json) => _TaskModel(
-      titleEmoji: json['titleEmoji'] as String,
+      emoji: json['emoji'] as String,
       title: json['title'] as String,
     );
 
 Map<String, dynamic> _$TaskModelToJson(_TaskModel instance) =>
     <String, dynamic>{
-      'titleEmoji': instance.titleEmoji,
+      'emoji': instance.emoji,
       'title': instance.title,
     };

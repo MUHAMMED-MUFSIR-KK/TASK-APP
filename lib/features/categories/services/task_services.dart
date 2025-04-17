@@ -1,18 +1,36 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:flutter_application_1/features/categories/model/task_model.dart';
 
 class TaskServices {
-  final CollectionReference _tasksCollection =
-      FirebaseFirestore.instance.collection("task");
+  final _tasksCollection = FirebaseFirestore.instance.collection("task");
 
-  Future<void> addTask(String title, String titleEmoji) async {
+  Future<void> addTask(String title, String emoji) async {
     try {
       await _tasksCollection.add({
         'title': title,
-        'emoji': titleEmoji,
+        'emoji': emoji,
         'createdAt': FieldValue.serverTimestamp(), // Optional: add timestamp
       });
     } catch (e) {
       print("Error adding task: ${e.toString()}");
+      rethrow;
+    }
+  }
+
+  Future<List<TaskModel>> taskDataFetching() async {
+    try {
+      final List<TaskModel> data = await _tasksCollection.get().then(
+        (value) {
+          return value.docs.map(
+            (doc) {
+              return TaskModel.fromJson(doc.data());
+            },
+          ).toList();
+        },
+      );
+      return data;
+    } catch (e) {
+      print("  error data fetching ${e.toString()}");
       rethrow;
     }
   }

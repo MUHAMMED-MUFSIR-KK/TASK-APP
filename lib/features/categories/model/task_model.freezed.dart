@@ -15,7 +15,7 @@ T _$identity<T>(T value) => value;
 
 /// @nodoc
 mixin _$TaskModel {
-  String get titleEmoji;
+  String get emoji;
   String get title;
 
   /// Create a copy of TaskModel
@@ -33,18 +33,17 @@ mixin _$TaskModel {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
             other is TaskModel &&
-            (identical(other.titleEmoji, titleEmoji) ||
-                other.titleEmoji == titleEmoji) &&
+            (identical(other.emoji, emoji) || other.emoji == emoji) &&
             (identical(other.title, title) || other.title == title));
   }
 
   @JsonKey(includeFromJson: false, includeToJson: false)
   @override
-  int get hashCode => Object.hash(runtimeType, titleEmoji, title);
+  int get hashCode => Object.hash(runtimeType, emoji, title);
 
   @override
   String toString() {
-    return 'TaskModel(titleEmoji: $titleEmoji, title: $title)';
+    return 'TaskModel(emoji: $emoji, title: $title)';
   }
 }
 
@@ -53,7 +52,7 @@ abstract mixin class $TaskModelCopyWith<$Res> {
   factory $TaskModelCopyWith(TaskModel value, $Res Function(TaskModel) _then) =
       _$TaskModelCopyWithImpl;
   @useResult
-  $Res call({String titleEmoji, String title});
+  $Res call({String emoji, String title});
 }
 
 /// @nodoc
@@ -68,13 +67,13 @@ class _$TaskModelCopyWithImpl<$Res> implements $TaskModelCopyWith<$Res> {
   @pragma('vm:prefer-inline')
   @override
   $Res call({
-    Object? titleEmoji = null,
+    Object? emoji = null,
     Object? title = null,
   }) {
     return _then(_self.copyWith(
-      titleEmoji: null == titleEmoji
-          ? _self.titleEmoji
-          : titleEmoji // ignore: cast_nullable_to_non_nullable
+      emoji: null == emoji
+          ? _self.emoji
+          : emoji // ignore: cast_nullable_to_non_nullable
               as String,
       title: null == title
           ? _self.title
@@ -87,12 +86,12 @@ class _$TaskModelCopyWithImpl<$Res> implements $TaskModelCopyWith<$Res> {
 /// @nodoc
 @JsonSerializable()
 class _TaskModel implements TaskModel {
-  const _TaskModel({required this.titleEmoji, required this.title});
+  const _TaskModel({required this.emoji, required this.title});
   factory _TaskModel.fromJson(Map<String, dynamic> json) =>
       _$TaskModelFromJson(json);
 
   @override
-  final String titleEmoji;
+  final String emoji;
   @override
   final String title;
 
@@ -116,18 +115,17 @@ class _TaskModel implements TaskModel {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
             other is _TaskModel &&
-            (identical(other.titleEmoji, titleEmoji) ||
-                other.titleEmoji == titleEmoji) &&
+            (identical(other.emoji, emoji) || other.emoji == emoji) &&
             (identical(other.title, title) || other.title == title));
   }
 
   @JsonKey(includeFromJson: false, includeToJson: false)
   @override
-  int get hashCode => Object.hash(runtimeType, titleEmoji, title);
+  int get hashCode => Object.hash(runtimeType, emoji, title);
 
   @override
   String toString() {
-    return 'TaskModel(titleEmoji: $titleEmoji, title: $title)';
+    return 'TaskModel(emoji: $emoji, title: $title)';
   }
 }
 
@@ -139,7 +137,7 @@ abstract mixin class _$TaskModelCopyWith<$Res>
       __$TaskModelCopyWithImpl;
   @override
   @useResult
-  $Res call({String titleEmoji, String title});
+  $Res call({String emoji, String title});
 }
 
 /// @nodoc
@@ -154,13 +152,13 @@ class __$TaskModelCopyWithImpl<$Res> implements _$TaskModelCopyWith<$Res> {
   @override
   @pragma('vm:prefer-inline')
   $Res call({
-    Object? titleEmoji = null,
+    Object? emoji = null,
     Object? title = null,
   }) {
     return _then(_TaskModel(
-      titleEmoji: null == titleEmoji
-          ? _self.titleEmoji
-          : titleEmoji // ignore: cast_nullable_to_non_nullable
+      emoji: null == emoji
+          ? _self.emoji
+          : emoji // ignore: cast_nullable_to_non_nullable
               as String,
       title: null == title
           ? _self.title

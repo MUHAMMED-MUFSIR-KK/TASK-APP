@@ -7,10 +7,13 @@ part 'task_controller.g.dart';
 class TaskController extends _$TaskController {
   final taskServices = TaskServices();
   @override
-  List<TaskModel> build() => [];
+  Future<List<TaskModel>> build() async {
+    return await taskData();
+  }
 
-  Future<void> addTask(String title, String titleEmoji) async {
-    await taskServices.addTask(title, titleEmoji);
+  Future<void> addTask(String title, String emoji) async {
+    await taskServices.addTask(title, emoji);
+    ref.invalidateSelf();
   }
 
   String? taskValidate(String value) {
@@ -18,5 +21,10 @@ class TaskController extends _$TaskController {
       return "you must enter a value";
     }
     return null;
+  }
+
+  Future<List<TaskModel>> taskData() async {
+    final tasks = await taskServices.taskDataFetching();
+    return tasks;
   }
 }

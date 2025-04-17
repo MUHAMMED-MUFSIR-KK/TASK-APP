@@ -19,6 +19,7 @@ class CategoriesPage extends HookConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    final state = ref.watch(taskControllerProvider);
     final formKey = GlobalKey<FormState>();
     final toggle = useState(true);
     void onTap() {
@@ -32,6 +33,8 @@ class CategoriesPage extends HookConsumerWidget {
             .addTask(titleController.text, titleEmojiController.text);
       }
       onTap();
+      titleController.clear();
+      titleEmojiController.clear();
     }
 
     return Scaffold(
@@ -97,7 +100,7 @@ class CategoriesPage extends HookConsumerWidget {
                                   TextStyle(fontSize: 15, color: Colors.white),
                             ),
                             Text(
-                              "Muhameed Mufsir kk",
+                              "Muhammad Mufsir kk",
                               style: TextStyle(
                                   color:
                                       const Color.fromARGB(250, 118, 124, 131)),
@@ -132,6 +135,65 @@ class CategoriesPage extends HookConsumerWidget {
                             size: 40,
                           )),
                     ),
+                  ),
+                ),
+                Expanded(
+                  child: state.when(
+                    loading: () =>
+                        const Center(child: CircularProgressIndicator()),
+                    error: (error, stack) => Center(
+                        child: Text('Error: $error',
+                            style: const TextStyle(color: Colors.white))),
+                    data: (tasks) {
+                      return GridView.builder(
+                        shrinkWrap: true,
+                        gridDelegate:
+                            const SliverGridDelegateWithFixedCrossAxisCount(
+                          crossAxisCount: 2,
+                          crossAxisSpacing: 10,
+                          mainAxisSpacing: 10,
+                          childAspectRatio: 180 / 130,
+                        ),
+                        itemCount: tasks.length,
+                        itemBuilder: (context, index) {
+                          final task = tasks[index];
+                          return Container(
+                            decoration: BoxDecoration(
+                                color: const Color.fromARGB(250, 55, 63, 74),
+                                boxShadow: [
+                                  BoxShadow(
+                                      color:
+                                          const Color.fromARGB(255, 44, 44, 44),
+                                      offset: const Offset(0, 2),
+                                      spreadRadius: 1.2)
+                                ]),
+                            child: Padding(
+                              padding: const EdgeInsets.only(left: 30, top: 20),
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Text(
+                                    task.emoji,
+                                    style: const TextStyle(
+                                        fontSize: 18, color: Colors.white),
+                                  ),
+                                  Text(
+                                    task.title,
+                                    style: const TextStyle(
+                                        fontSize: 18, color: Colors.white),
+                                  ),
+                                  const Text(
+                                    "0 task",
+                                    style: TextStyle(
+                                        fontSize: 15, color: Colors.white),
+                                  )
+                                ],
+                              ),
+                            ),
+                          );
+                        },
+                      );
+                    },
                   ),
                 )
               ],
