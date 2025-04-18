@@ -1,15 +1,19 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter_application_1/features/categories/model/task_model.dart';
 
 class TaskServices {
-  final _tasksCollection = FirebaseFirestore.instance.collection("task");
+  final _tasksCollection = FirebaseFirestore.instance
+      .collection("user")
+      .doc(FirebaseAuth.instance.currentUser!.uid)
+      .collection("task");
 
   Future<void> addTask(String title, String emoji) async {
     try {
       await _tasksCollection.add({
         'title': title,
         'emoji': emoji,
-        'createdAt': FieldValue.serverTimestamp(), // Optional: add timestamp
+        'createdAt': FieldValue.serverTimestamp(),
       });
     } catch (e) {
       print("Error adding task: ${e.toString()}");
