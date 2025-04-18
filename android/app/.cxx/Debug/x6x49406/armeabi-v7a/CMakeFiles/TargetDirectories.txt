@@ -1,0 +1,2 @@
+/home/mufi/TASK-APP/android/app/.cxx/Debug/x6x49406/armeabi-v7a/CMakeFiles/edit_cache.dir
+/home/mufi/TASK-APP/android/app/.cxx/Debug/x6x49406/armeabi-v7a/CMakeFiles/rebuild_cache.dir

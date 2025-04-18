@@ -2,6 +2,7 @@ import 'dart:ui';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_application_1/features/categories/view/pages/settings_page.dart';
+import 'package:flutter_application_1/features/categories/view/widgets/categories_add_widgets.dart';
 import 'package:flutter_application_1/features/categories/view_model/task_controller.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:go_router/go_router.dart';
@@ -114,29 +115,6 @@ class CategoriesPage extends HookConsumerWidget {
                 SizedBox(
                   height: 20,
                 ),
-                Container(
-                  height: 130,
-                  width: 180,
-                  decoration: BoxDecoration(
-                      color: const Color.fromARGB(250, 55, 63, 74),
-                      boxShadow: [
-                        BoxShadow(
-                            color: const Color.fromARGB(255, 44, 44, 44),
-                            offset: Offset(0, 2),
-                            spreadRadius: 1.2)
-                      ]),
-                  child: Center(
-                    child: GestureDetector(
-                      onTap: onTap,
-                      child: CircleAvatar(
-                          radius: 25,
-                          child: Icon(
-                            Icons.add,
-                            size: 40,
-                          )),
-                    ),
-                  ),
-                ),
                 Expanded(
                   child: state.when(
                     loading: () =>
@@ -154,9 +132,13 @@ class CategoriesPage extends HookConsumerWidget {
                           mainAxisSpacing: 10,
                           childAspectRatio: 180 / 130,
                         ),
-                        itemCount: tasks.length,
+                        itemCount: tasks.length + 1, // +1 for the add button
                         itemBuilder: (context, index) {
-                          final task = tasks[index];
+                          if (index == 0) {
+                            return categoriesAddedWidget(onTap: onTap);
+                          }
+                          final task =
+                              tasks[index - 1]; // Adjust index for tasks
                           return Container(
                             decoration: BoxDecoration(
                                 color: const Color.fromARGB(250, 55, 63, 74),
